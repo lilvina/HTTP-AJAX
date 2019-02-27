@@ -27,6 +27,14 @@ class App extends React.Component {
       })
 
   }
+
+  friendDelete = e => {
+    console.log(e.target.value)
+    axios
+      .delete(`http://localhost:5000/friends/${e.target.value}`)
+      .then(res => console.log(res.data))
+  }
+
   render() {
     return (
       <div className="App">
@@ -34,7 +42,7 @@ class App extends React.Component {
         <FriendForm />
         {this.state.friends.map(friend => {
           return (
-            <Friends {...friend} key={friend.id} />
+            <Friends {...friend} key={friend.id} friendDelete={this.friendDelete} />
           )
         })}
 
