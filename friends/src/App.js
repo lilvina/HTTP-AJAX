@@ -33,6 +33,7 @@ class App extends React.Component {
     axios
       .delete(`http://localhost:5000/friends/${e.target.value}`)
       .then(res => console.log(res.data))
+      window.location.reload()
   }
 
   render() {
