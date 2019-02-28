@@ -10,7 +10,9 @@ class App extends React.Component {
     super()
     this.state = {
       friends: [],
-
+      name: '',
+      age: '',
+      email: ''
     }
   }
 
@@ -28,19 +30,59 @@ class App extends React.Component {
 
   }
 
+  handleFriends = e => {
+    this.setState({
+      [e.target.name]: e.target.value
+    })
+  }
+
+  onSubmit = e => {
+    e.preventDefault()
+
+    const addFriends = {
+      name: this.state.name,
+      age: this.state.age,
+      email: this.state.email
+    }
+    axios
+      .post('http://localhost:5000/friends', addFriends)
+      .then(res => {
+        this.setState({
+          friends: res.data
+        })
+      })
+      .catch(err => console.log(err))
+  }
+
+  formReset = e => {
+    e.preventDefault()
+    this.setState({ name: '', age: '', email: '' })
+  }
+
   friendDelete = e => {
     console.log(e.target.value)
     axios
       .delete(`http://localhost:5000/friends/${e.target.value}`)
-      .then(res => console.log(res.data))
-      window.location.reload()
+      .then(res => this.setState({
+        friends: res.data
+      }))
+      .catch(err => console.log(err))
+      //window.location.reload()
   }
 
   render() {
     return (
       <div className="App">
         <h1>Lists of friends</h1>
-        <FriendForm />
+        <FriendForm
+          onSubmit={this.onSubmit}
+          name={this.state.name}
+          age={this.state.age}
+          email={this.state.email}
+          onChange={this.handleFriends}
+          handleFriends={this.handleFriends}
+          formReset={this.formReset}
+          />
         {this.state.friends.map(friend => {
           return (
             <Friends {...friend} key={friend.id} friendDelete={this.friendDelete} />

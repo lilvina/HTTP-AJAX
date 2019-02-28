@@ -1,51 +1,19 @@
-import React, {Component} from 'react';
-import axios from 'axios';
+import React from 'react';
 
-class FriendForm extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      name: '',
-      age: '',
-      email: ''
-    }
-  }
+const FriendForm = props => {
+  return (
+    <form className="friend" onSubmit={props.onSubmit}>
+      <input onChange={props.handleFriends} name="name" type="text" placeholder="name" value={props.name} required />
 
-  handleFriends = e => {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
+      <input onChange={props.handleFriends} name="age" type="text" placeholder="age" value={props.age} required />
 
-  onSubmit = e => {
-    axios
-      .post('http://localhost:5000/friends', this.state)
-      .then(res => {
-        console.log(res)
-        console.log(res.data)
-      })
-  }
+      <input onChange={props.handleFriends} name="email" type="text" placeholder="email" value={props.email} required />
 
-  formReset = e => {
-    e.preventDefault()
-    this.setState({ name: '', age: '', email: '' })
-  }
+      <input type="submit" value="value" />
+      <input type="reset" onClick={props.formReset}/>
 
-  render() {
-    return (
-      <form className="friend" onSubmit={this.onSubmit}>
-        <input onChange={this.handleFriends} name="name" type="text" placeholder="name" value={this.state.name} required />
-
-        <input onChange={this.handleFriends} name="age" type="text" placeholder="age" value={this.state.age} required />
-
-        <input onChange={this.handleFriends} name="email" type="text" placeholder="email" value={this.state.email} required />
-
-        <input type="submit" value="value" />
-        <input type="reset" onClick={this.formReset}/>
-
-      </form>
-    )
-  }
+    </form>
+  )
 }
 
 export default FriendForm;
